@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ChatList from './components/sidebar/ChatList';
 import ChatWindow from './components/chat/ChatWindow';
 import DetailsPanel from './components/sidebar/DetailsPanel';
 import ProfilePage from './components/profile/ProfilePage';
 import { mockChats, currentUser as initialUser } from './data/mockData';
+import { getCurrentLanguage } from './utils/i18n';
 
 /**
  * Main App component - WhatsApp Web Clone
@@ -17,6 +18,7 @@ function App() {
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(initialUser);
+  const [language, setLanguage] = useState(getCurrentLanguage());
 
   // Get current active chat
   const activeChat = chats.find((chat) => chat.id === activeChatId);
@@ -85,6 +87,21 @@ function App() {
   };
 
   /**
+   * Handle language change
+   * @param {string} newLanguage - New language code
+   */
+  const handleLanguageChange = (newLanguage) => {
+    setLanguage(newLanguage);
+  };
+
+  /**
+   * Initialize language from localStorage on mount
+   */
+  useEffect(() => {
+    setLanguage(getCurrentLanguage());
+  }, []);
+
+  /**
    * Main chat interface component
    */
   const ChatInterface = () => (
@@ -108,6 +125,8 @@ function App() {
           activeChat={activeChatId}
           onChatSelect={handleChatSelect}
           currentUser={currentUser}
+          language={language}
+          onLanguageChange={handleLanguageChange}
         />
       </div>
 
@@ -129,6 +148,7 @@ function App() {
           chat={activeChat}
           onSendMessage={handleSendMessage}
           onToggleDetails={handleToggleDetails}
+          language={language}
         />
       </div>
 
@@ -142,6 +162,7 @@ function App() {
           contact={activeChat?.contact}
           isOpen={detailsOpen}
           onClose={handleToggleDetails}
+          language={language}
         />
       </div>
 
@@ -156,6 +177,7 @@ function App() {
               contact={activeChat.contact}
               isOpen={detailsOpen}
               onClose={handleToggleDetails}
+              language={language}
             />
           </div>
         </div>
@@ -172,7 +194,8 @@ function App() {
           element={
             <ProfilePage 
               user={currentUser} 
-              onUpdateUser={handleUpdateUser} 
+              onUpdateUser={handleUpdateUser}
+              language={language}
             />
           } 
         />

@@ -1,4 +1,5 @@
 import React from 'react';
+import { translate } from '../../utils/i18n';
 
 /**
  * DetailsPanel component - displays contact details and media
@@ -6,9 +7,10 @@ import React from 'react';
  * @param {Object} props.contact - Contact information
  * @param {boolean} props.isOpen - Whether panel is visible
  * @param {Function} props.onClose - Callback to close panel
+ * @param {string} props.language - Current language code
  */
 // PUBLIC_INTERFACE
-function DetailsPanel({ contact, isOpen, onClose }) {
+function DetailsPanel({ contact, isOpen, onClose, language }) {
   if (!contact || !isOpen) {
     return null;
   }
@@ -17,11 +19,11 @@ function DetailsPanel({ contact, isOpen, onClose }) {
     <div className="w-full lg:w-96 bg-white border-l border-gray-200 overflow-y-auto">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 bg-background border-b border-gray-200">
-        <h2 className="text-lg font-semibold text-text">Contact Info</h2>
+        <h2 className="text-lg font-semibold text-text">{translate('contactInfoTitle', language)}</h2>
         <button
           onClick={onClose}
           className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-          aria-label="Close details"
+          aria-label={translate('close', language)}
         >
           <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -35,18 +37,18 @@ function DetailsPanel({ contact, isOpen, onClose }) {
           {contact.avatar}
         </div>
         <h3 className="text-xl font-semibold text-text mb-1">{contact.name}</h3>
-        <p className="text-sm text-secondary">{contact.status}</p>
+        <p className="text-sm text-secondary">{translate(contact.status, language)}</p>
       </div>
 
       {/* About section */}
       <div className="px-4 py-4 border-b border-gray-200">
-        <p className="text-xs text-secondary mb-2">About</p>
+        <p className="text-xs text-secondary mb-2">{translate('about', language)}</p>
         <p className="text-sm text-text">{contact.about}</p>
       </div>
 
       {/* Media section placeholder */}
       <div className="px-4 py-4 border-b border-gray-200">
-        <p className="text-xs text-secondary mb-3">Media, Links and Docs</p>
+        <p className="text-xs text-secondary mb-3">{translate('mediaLinksAndDocs', language)}</p>
         <div className="grid grid-cols-3 gap-2">
           {[1, 2, 3, 4, 5, 6].map((item) => (
             <div
@@ -67,7 +69,7 @@ function DetailsPanel({ contact, isOpen, onClose }) {
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
           </svg>
-          <span className="font-medium">Delete Chat</span>
+          <span className="font-medium">{translate('deleteChat', language)}</span>
         </button>
       </div>
     </div>

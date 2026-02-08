@@ -2,6 +2,7 @@ import React from 'react';
 import ChatHeader from './ChatHeader';
 import MessageList from './MessageList';
 import ChatInput from './ChatInput';
+import { translate } from '../../utils/i18n';
 
 /**
  * ChatWindow component - main chat area
@@ -9,9 +10,10 @@ import ChatInput from './ChatInput';
  * @param {Object} props.chat - Current chat data
  * @param {Function} props.onSendMessage - Callback when message is sent
  * @param {Function} props.onToggleDetails - Callback to toggle details panel
+ * @param {string} props.language - Current language code
  */
 // PUBLIC_INTERFACE
-function ChatWindow({ chat, onSendMessage, onToggleDetails }) {
+function ChatWindow({ chat, onSendMessage, onToggleDetails, language }) {
   if (!chat) {
     return (
       <div className="flex flex-col items-center justify-center h-full bg-background text-secondary">
@@ -20,7 +22,7 @@ function ChatWindow({ chat, onSendMessage, onToggleDetails }) {
         </svg>
         <h2 className="text-xl font-semibold text-text mb-2">WhatsApp Web</h2>
         <p className="text-sm text-center max-w-md">
-          Select a chat to start messaging
+          {translate('selectChat', language)}
         </p>
       </div>
     );
@@ -28,9 +30,9 @@ function ChatWindow({ chat, onSendMessage, onToggleDetails }) {
 
   return (
     <div className="flex flex-col h-full">
-      <ChatHeader contact={chat.contact} onToggleDetails={onToggleDetails} />
-      <MessageList messages={chat.messages} />
-      <ChatInput onSendMessage={onSendMessage} />
+      <ChatHeader contact={chat.contact} onToggleDetails={onToggleDetails} language={language} />
+      <MessageList messages={chat.messages} language={language} />
+      <ChatInput onSendMessage={onSendMessage} language={language} />
     </div>
   );
 }

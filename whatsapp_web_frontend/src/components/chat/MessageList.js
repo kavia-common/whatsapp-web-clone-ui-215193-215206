@@ -1,13 +1,15 @@
 import React, { useEffect, useRef } from 'react';
 import MessageBubble from './MessageBubble';
+import { translate } from '../../utils/i18n';
 
 /**
  * MessageList component - displays all messages in a conversation
  * @param {Object} props - Component props
  * @param {Array} props.messages - Array of message objects
+ * @param {string} props.language - Current language code
  */
 // PUBLIC_INTERFACE
-function MessageList({ messages }) {
+function MessageList({ messages, language }) {
   const messagesEndRef = useRef(null);
 
   // Auto-scroll to bottom when messages change
@@ -26,7 +28,7 @@ function MessageList({ messages }) {
         </>
       ) : (
         <div className="flex items-center justify-center h-full text-secondary">
-          <p>No messages yet. Start the conversation!</p>
+          <p>{translate('noMessages', language)}</p>
         </div>
       )}
     </div>

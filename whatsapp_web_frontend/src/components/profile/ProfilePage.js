@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { translate } from '../../utils/i18n';
 
 /**
  * ProfilePage component - displays and allows editing of current user profile
  * @param {Object} props - Component props
  * @param {Object} props.user - Current user data
  * @param {Function} props.onUpdateUser - Callback when user updates their profile
+ * @param {string} props.language - Current language code
  */
 // PUBLIC_INTERFACE
-function ProfilePage({ user, onUpdateUser }) {
+function ProfilePage({ user, onUpdateUser, language }) {
   const navigate = useNavigate();
   const [isEditMode, setIsEditMode] = useState(false);
   const [formData, setFormData] = useState({
@@ -68,14 +70,14 @@ function ProfilePage({ user, onUpdateUser }) {
         <button
           onClick={handleBack}
           className="p-2 hover:bg-white/10 rounded-full transition-colors"
-          aria-label="Back to chats"
+          aria-label={translate('backToChats', language)}
           data-testid="back-button"
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        <h1 className="text-xl font-semibold">Profile</h1>
+        <h1 className="text-xl font-semibold">{translate('profile', language)}</h1>
       </div>
 
       {/* Profile Content */}
@@ -91,9 +93,9 @@ function ProfilePage({ user, onUpdateUser }) {
             </div>
             <button
               className="text-sm text-success hover:text-success/80 font-medium transition-colors"
-              aria-label="Change profile photo"
+              aria-label={translate('changeProfilePhoto', language)}
             >
-              CHANGE PROFILE PHOTO
+              {translate('changeProfilePhoto', language)}
             </button>
           </div>
 
@@ -102,7 +104,7 @@ function ProfilePage({ user, onUpdateUser }) {
             {/* Name Field */}
             <div className="px-6 py-4 border-b border-gray-200">
               <label htmlFor="name" className="block text-xs text-success mb-2 font-medium">
-                Your name
+                {translate('yourName', language)}
               </label>
               {isEditMode ? (
                 <input
@@ -125,7 +127,7 @@ function ProfilePage({ user, onUpdateUser }) {
             {/* About Field */}
             <div className="px-6 py-4 border-b border-gray-200">
               <label htmlFor="about" className="block text-xs text-secondary mb-2">
-                About
+                {translate('about', language)}
               </label>
               {isEditMode ? (
                 <textarea
@@ -148,7 +150,7 @@ function ProfilePage({ user, onUpdateUser }) {
             {/* Phone Field (Read-only) */}
             <div className="px-6 py-4 border-b border-gray-200">
               <label htmlFor="phone" className="block text-xs text-secondary mb-2">
-                Phone
+                {translate('phone', language)}
               </label>
               {isEditMode ? (
                 <input
@@ -171,7 +173,7 @@ function ProfilePage({ user, onUpdateUser }) {
             {/* Status Field (Read-only) */}
             <div className="px-6 py-4 border-b border-gray-200">
               <label className="block text-xs text-secondary mb-2">
-                Status
+                {translate('status', language)}
               </label>
               <div className="flex items-center gap-2">
                 <span 
@@ -181,7 +183,7 @@ function ProfilePage({ user, onUpdateUser }) {
                   aria-label={`Status: ${user.status}`}
                 />
                 <p className="text-text capitalize" data-testid="status-display">
-                  {user.status}
+                  {translate(user.status, language)}
                 </p>
               </div>
             </div>
@@ -196,14 +198,14 @@ function ProfilePage({ user, onUpdateUser }) {
                   className="flex-1 px-6 py-3 bg-success text-white rounded-lg hover:bg-success/90 font-medium transition-colors shadow-sm"
                   data-testid="save-button"
                 >
-                  Save Changes
+                  {translate('saveChanges', language)}
                 </button>
                 <button
                   onClick={handleCancel}
                   className="flex-1 px-6 py-3 bg-gray-200 text-text rounded-lg hover:bg-gray-300 font-medium transition-colors"
                   data-testid="cancel-button"
                 >
-                  Cancel
+                  {translate('cancel', language)}
                 </button>
               </div>
             ) : (
@@ -212,7 +214,7 @@ function ProfilePage({ user, onUpdateUser }) {
                 className="w-full px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 font-medium transition-colors shadow-sm"
                 data-testid="edit-button"
               >
-                Edit Profile
+                {translate('editProfile', language)}
               </button>
             )}
           </div>

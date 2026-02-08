@@ -4,6 +4,17 @@ A modern, pixel-perfect WhatsApp Web clone built with React.js and Tailwind CSS.
 
 ## Features
 
+### Multi-Language Support
+- **Language Selector**: Switch between English, Spanish (Español), and French (Français)
+- **localStorage Persistence**: Selected language is automatically saved and restored on app load
+- **Lightweight i18n**: Simple dictionary-based translation system with no heavy dependencies
+- **Comprehensive Coverage**: All UI strings translated including:
+  - Navigation and headers
+  - Buttons and placeholders
+  - Status messages
+  - Form labels
+  - Empty states and notifications
+
 ### Layout
 - **Desktop Three-Panel Layout**: 
   - Left sidebar with chat list and search
@@ -95,7 +106,8 @@ The Profile page can be accessed in multiple ways:
 src/
 ├── components/
 │   ├── common/
-│   │   └── SearchBar.js          # Reusable search component
+│   │   ├── SearchBar.js          # Reusable search component
+│   │   └── LanguageSelector.js   # Language switcher dropdown
 │   ├── sidebar/
 │   │   ├── ChatList.js           # Chat list container
 │   │   ├── ChatListItem.js       # Individual chat item
@@ -112,6 +124,8 @@ src/
 │   └── mockData.js               # Mock contacts, chats, and current user
 ├── types/
 │   └── index.js                  # Type definitions (JSDoc)
+├── utils/
+│   └── i18n.js                   # Internationalization utilities
 ├── App.js                        # Main application with routing
 ├── App.css                       # Custom styles
 ├── index.js                      # Entry point
@@ -168,15 +182,41 @@ npm run build
 6. **Access Profile**: Click your avatar in the top-left corner to view/edit your profile
 7. **Edit Profile**: Click "Edit Profile" button to modify your information
 8. **Save Changes**: Click "Save Changes" to update (in-memory only)
-9. **Mobile**: On small screens, use the menu button to toggle the chat list
+9. **Change Language**: Click the language icon (🌐) in the chat list header to select a language
+   - Choose from English, Spanish (Español), or French (Français)
+   - Your language preference is automatically saved to localStorage
+   - The entire UI updates immediately to reflect your chosen language
+10. **Mobile**: On small screens, use the menu button to toggle the chat list
+
+### Language Support
+The application automatically remembers your language preference using browser localStorage. When you return to the app, your previously selected language will be restored automatically.
+
+**Supported Languages:**
+- English (en)
+- Spanish / Español (es)
+- French / Français (fr)
+
+**How to switch languages:**
+1. Click the language/globe icon in the chat list header (top right)
+2. Select your preferred language from the dropdown
+3. The UI instantly updates with all text in your chosen language
+4. Your selection is saved automatically for future visits
 
 ## Technical Details
 
 ### State Management
-- React hooks (useState) for local state
+- React hooks (useState, useEffect) for local state
 - No external state management library needed
 - All data stored in component state
 - Profile changes update parent App state
+- Language state managed at App level and passed down via props
+
+### Internationalization (i18n)
+- **Lightweight Dictionary System**: Simple key-value translation pairs
+- **No Heavy Dependencies**: Self-contained i18n utils without external libraries
+- **localStorage API**: Persists language selection across sessions
+- **Translation Coverage**: 30+ UI strings translated across all components
+- **Fallback Support**: Defaults to English if stored language is unavailable
 
 ### Routing
 - React Router v6 for client-side navigation
