@@ -1,47 +1,150 @@
-import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import ChatList from './components/sidebar/ChatList';
+import ChatWindow from './components/chat/ChatWindow';
+import DetailsPanel from './components/sidebar/DetailsPanel';
+import { mockChats } from './data/mockData';
 
+/**
+ * Main App component - WhatsApp Web Clone
+ * Manages state for chats, selected chat, and UI interactions
+ */
 // PUBLIC_INTERFACE
 function App() {
-  const [theme, setTheme] = useState('light');
+  const [chats, setChats] = useState(mockChats);
+  const [activeChatId, setActiveChatId] = useState(null);
+  const [detailsOpen, setDetailsOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Effect to apply theme to document element
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
+  // Get current active chat
+  const activeChat = chats.find((chat) => chat.id === activeChatId);
 
-  // PUBLIC_INTERFACE
-  const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
+  /**
+   * Handle chat selection
+   * @param {string} chatId - ID of selected chat
+   */
+  const handleChatSelect = (chatId) => {
+    setActiveChatId(chatId);
+    setIsMobileMenuOpen(false);
+    // Mark as read
+    setChats((prevChats) =>
+      prevChats.map((chat) =>
+        chat.id === chatId ? { ...chat, unreadCount: 0 } : chat
+      )
+    );
+  };
+
+  /**
+   * Handle sending a new message
+   * @param {string} messageText - Text content of the message
+   */
+  const handleSendMessage = (messageText) => {
+    if (!activeChatId) return;
+
+    const newMessage = {
+      id: `m${Date.now()}`,
+      text: messageText,
+      timestamp: new Date().toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+      }),
+      sent: true,
+      read: false,
+    };
+
+    setChats((prevChats) =>
+      prevChats.map((chat) => {
+        if (chat.id === activeChatId) {
+          return {
+            ...chat,
+            messages: [...chat.messages, newMessage],
+            lastMessage: messageText,
+            lastMessageTime: newMessage.timestamp,
+          };
+        }
+        return chat;
+      })
+    );
+  };
+
+  /**
+   * Toggle details panel visibility
+   */
+  const handleToggleDetails = () => {
+    setDetailsOpen((prev) => !prev);
   };
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <button 
-          className="theme-toggle" 
-          onClick={toggleTheme}
-          aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-        >
-          {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
-        </button>
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <p>
-          Current theme: <strong>{theme}</strong>
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="h-screen flex bg-background overflow-hidden">
+      {/* Mobile menu overlay */}
+      {isMobileMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+
+      {/* Left Sidebar - Chat List */}
+      <div
+        className={`${
+          isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+        } lg:translate-x-0 fixed lg:relative z-50 w-full sm:w-96 h-full bg-white border-r border-gray-200 transition-transform duration-300 ease-in-out shadow-xl lg:shadow-none`}
+      >
+        <ChatList
+          chats={chats}
+          activeChat={activeChatId}
+          onChatSelect={handleChatSelect}
+        />
+      </div>
+
+      {/* Center - Chat Window */}
+      <div className="flex-1 flex flex-col h-full relative">
+        {/* Mobile header toggle */}
+        {!activeChat && (
+          <button
+            onClick={() => setIsMobileMenuOpen(true)}
+            className="lg:hidden absolute top-4 left-4 z-10 p-2 bg-white rounded-full shadow-lg"
+            aria-label="Open menu"
+          >
+            <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        )}
+        <ChatWindow
+          chat={activeChat}
+          onSendMessage={handleSendMessage}
+          onToggleDetails={handleToggleDetails}
+        />
+      </div>
+
+      {/* Right Sidebar - Details Panel (Desktop) */}
+      <div
+        className={`hidden lg:block transition-all duration-300 ${
+          detailsOpen && activeChat ? 'w-96' : 'w-0'
+        } overflow-hidden`}
+      >
+        <DetailsPanel
+          contact={activeChat?.contact}
+          isOpen={detailsOpen}
+          onClose={handleToggleDetails}
+        />
+      </div>
+
+      {/* Mobile Details Panel (Overlay) */}
+      {detailsOpen && activeChat && (
+        <div className="lg:hidden fixed inset-0 z-50 bg-black/50" onClick={handleToggleDetails}>
+          <div
+            className="absolute right-0 top-0 h-full w-full sm:w-96 bg-white"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <DetailsPanel
+              contact={activeChat.contact}
+              isOpen={detailsOpen}
+              onClose={handleToggleDetails}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
