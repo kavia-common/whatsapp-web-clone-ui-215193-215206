@@ -64,6 +64,16 @@ export const mockContacts = [
 ];
 
 // PUBLIC_INTERFACE
+export const currentUser = {
+  id: 'current',
+  name: 'John Doe',
+  avatar: '😊',
+  phone: '+1 (555) 123-4567',
+  about: 'Hey there! I am using WhatsApp.',
+  status: 'online'
+};
+
+// PUBLIC_INTERFACE
 export const mockChats = [
   {
     id: '1',

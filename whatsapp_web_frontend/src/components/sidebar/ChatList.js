@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ChatListItem from './ChatListItem';
 import SearchBar from '../common/SearchBar';
 
@@ -8,10 +9,12 @@ import SearchBar from '../common/SearchBar';
  * @param {Array} props.chats - Array of chat objects
  * @param {string} props.activeChat - ID of currently active chat
  * @param {Function} props.onChatSelect - Callback when a chat is selected
+ * @param {Object} props.currentUser - Current user object for profile navigation
  */
 // PUBLIC_INTERFACE
-function ChatList({ chats, activeChat, onChatSelect }) {
+function ChatList({ chats, activeChat, onChatSelect, currentUser }) {
   const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
 
   // Filter chats based on search query
   const filteredChats = chats.filter((chat) => {
@@ -22,11 +25,28 @@ function ChatList({ chats, activeChat, onChatSelect }) {
     );
   });
 
+  /**
+   * Navigate to profile page
+   */
+  const handleProfileClick = () => {
+    navigate('/profile');
+  };
+
   return (
     <div className="flex flex-col h-full bg-white">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 bg-background border-b border-gray-200">
-        <h2 className="text-lg font-semibold text-text">Chats</h2>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={handleProfileClick}
+            className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/10 to-gray-100 flex items-center justify-center text-xl shadow-sm hover:shadow-md transition-shadow"
+            aria-label="Open profile"
+            title="Profile"
+          >
+            {currentUser?.avatar || '😊'}
+          </button>
+          <h2 className="text-lg font-semibold text-text">Chats</h2>
+        </div>
         <div className="flex gap-2">
           <button
             className="p-2 hover:bg-gray-100 rounded-full transition-colors"

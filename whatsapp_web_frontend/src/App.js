@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ChatList from './components/sidebar/ChatList';
 import ChatWindow from './components/chat/ChatWindow';
 import DetailsPanel from './components/sidebar/DetailsPanel';
-import { mockChats } from './data/mockData';
+import ProfilePage from './components/profile/ProfilePage';
+import { mockChats, currentUser as initialUser } from './data/mockData';
 
 /**
  * Main App component - WhatsApp Web Clone
- * Manages state for chats, selected chat, and UI interactions
+ * Manages state for chats, selected chat, current user, and UI interactions
  */
 // PUBLIC_INTERFACE
 function App() {
@@ -14,6 +16,7 @@ function App() {
   const [activeChatId, setActiveChatId] = useState(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState(initialUser);
 
   // Get current active chat
   const activeChat = chats.find((chat) => chat.id === activeChatId);
@@ -73,7 +76,18 @@ function App() {
     setDetailsOpen((prev) => !prev);
   };
 
-  return (
+  /**
+   * Update current user profile
+   * @param {Object} updatedUser - Updated user data
+   */
+  const handleUpdateUser = (updatedUser) => {
+    setCurrentUser(updatedUser);
+  };
+
+  /**
+   * Main chat interface component
+   */
+  const ChatInterface = () => (
     <div className="h-screen flex bg-background overflow-hidden">
       {/* Mobile menu overlay */}
       {isMobileMenuOpen && (
@@ -93,6 +107,7 @@ function App() {
           chats={chats}
           activeChat={activeChatId}
           onChatSelect={handleChatSelect}
+          currentUser={currentUser}
         />
       </div>
 
@@ -146,6 +161,23 @@ function App() {
         </div>
       )}
     </div>
+  );
+
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<ChatInterface />} />
+        <Route 
+          path="/profile" 
+          element={
+            <ProfilePage 
+              user={currentUser} 
+              onUpdateUser={handleUpdateUser} 
+            />
+          } 
+        />
+      </Routes>
+    </Router>
   );
 }
 
