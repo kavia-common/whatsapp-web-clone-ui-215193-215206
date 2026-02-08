@@ -6,6 +6,7 @@ import DetailsPanel from './components/sidebar/DetailsPanel';
 import ProfilePage from './components/profile/ProfilePage';
 import { mockChats, currentUser as initialUser } from './data/mockData';
 import { getCurrentLanguage } from './utils/i18n';
+import { initializeTheme, getCurrentTheme } from './utils/theme';
 
 /**
  * Main App component - WhatsApp Web Clone
@@ -19,6 +20,7 @@ function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(initialUser);
   const [language, setLanguage] = useState(getCurrentLanguage());
+  const [theme, setThemeState] = useState(getCurrentTheme());
 
   // Get current active chat
   const activeChat = chats.find((chat) => chat.id === activeChatId);
@@ -95,21 +97,30 @@ function App() {
   };
 
   /**
-   * Initialize language from localStorage on mount
+   * Initialize language and theme from localStorage on mount
    */
   useEffect(() => {
     setLanguage(getCurrentLanguage());
+    initializeTheme();
   }, []);
+
+  /**
+   * Handle theme change
+   * @param {string} newTheme - New theme value
+   */
+  const handleThemeChange = (newTheme) => {
+    setThemeState(newTheme);
+  };
 
   /**
    * Main chat interface component
    */
   const ChatInterface = () => (
-    <div className="h-screen flex bg-background overflow-hidden">
+    <div className="h-screen flex bg-background dark:bg-dark-background overflow-hidden">
       {/* Mobile menu overlay */}
       {isMobileMenuOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/50 dark:bg-black/70 z-40 lg:hidden"
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
@@ -118,7 +129,7 @@ function App() {
       <div
         className={`${
           isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
-        } lg:translate-x-0 fixed lg:relative z-50 w-full sm:w-96 h-full bg-white border-r border-gray-200 transition-transform duration-300 ease-in-out shadow-xl lg:shadow-none`}
+        } lg:translate-x-0 fixed lg:relative z-50 w-full sm:w-96 h-full bg-white dark:bg-dark-surface border-r border-gray-200 dark:border-dark-border transition-transform duration-300 ease-in-out shadow-xl lg:shadow-none`}
       >
         <ChatList
           chats={chats}
@@ -127,6 +138,7 @@ function App() {
           currentUser={currentUser}
           language={language}
           onLanguageChange={handleLanguageChange}
+          onThemeChange={handleThemeChange}
         />
       </div>
 
@@ -136,10 +148,10 @@ function App() {
         {!activeChat && (
           <button
             onClick={() => setIsMobileMenuOpen(true)}
-            className="lg:hidden absolute top-4 left-4 z-10 p-2 bg-white rounded-full shadow-lg"
+            className="lg:hidden absolute top-4 left-4 z-10 p-2 bg-white dark:bg-dark-surface rounded-full shadow-lg"
             aria-label="Open menu"
           >
-            <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-6 h-6 text-primary dark:text-dark-text" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
@@ -168,9 +180,9 @@ function App() {
 
       {/* Mobile Details Panel (Overlay) */}
       {detailsOpen && activeChat && (
-        <div className="lg:hidden fixed inset-0 z-50 bg-black/50" onClick={handleToggleDetails}>
+        <div className="lg:hidden fixed inset-0 z-50 bg-black/50 dark:bg-black/70" onClick={handleToggleDetails}>
           <div
-            className="absolute right-0 top-0 h-full w-full sm:w-96 bg-white"
+            className="absolute right-0 top-0 h-full w-full sm:w-96 bg-white dark:bg-dark-surface"
             onClick={(e) => e.stopPropagation()}
           >
             <DetailsPanel

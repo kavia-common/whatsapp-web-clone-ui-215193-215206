@@ -64,12 +64,12 @@ function ProfilePage({ user, onUpdateUser, language }) {
   };
 
   return (
-    <div className="h-screen flex flex-col bg-background" data-testid="profile-page">
+    <div className="h-screen flex flex-col bg-background dark:bg-dark-background" data-testid="profile-page">
       {/* Header */}
-      <div className="flex items-center gap-4 px-4 py-4 bg-primary text-white shadow-md">
+      <div className="flex items-center gap-4 px-4 py-4 bg-primary dark:bg-dark-primary text-white shadow-md">
         <button
           onClick={handleBack}
-          className="p-2 hover:bg-white/10 rounded-full transition-colors"
+          className="p-2 hover:bg-white/10 dark:hover:bg-white/20 rounded-full transition-colors"
           aria-label={translate('backToChats', language)}
           data-testid="back-button"
         >
@@ -84,15 +84,15 @@ function ProfilePage({ user, onUpdateUser, language }) {
       <div className="flex-1 overflow-y-auto">
         <div className="max-w-2xl mx-auto">
           {/* Avatar Section */}
-          <div className="flex flex-col items-center py-8 bg-white border-b border-gray-200">
+          <div className="flex flex-col items-center py-8 bg-white dark:bg-dark-surface border-b border-gray-200 dark:border-dark-border">
             <div 
-              className="w-32 h-32 rounded-full bg-gradient-to-br from-primary/10 to-gray-100 flex items-center justify-center text-6xl shadow-lg mb-4"
+              className="w-32 h-32 rounded-full bg-gradient-to-br from-primary/10 to-gray-100 dark:from-dark-primary/20 dark:to-dark-border flex items-center justify-center text-6xl shadow-lg mb-4"
               data-testid="profile-avatar"
             >
               {user.avatar}
             </div>
             <button
-              className="text-sm text-success hover:text-success/80 font-medium transition-colors"
+              className="text-sm text-success dark:text-dark-success hover:text-success/80 dark:hover:text-dark-success/80 font-medium transition-colors"
               aria-label={translate('changeProfilePhoto', language)}
             >
               {translate('changeProfilePhoto', language)}
@@ -100,10 +100,10 @@ function ProfilePage({ user, onUpdateUser, language }) {
           </div>
 
           {/* Profile Information */}
-          <div className="bg-white">
+          <div className="bg-white dark:bg-dark-surface">
             {/* Name Field */}
-            <div className="px-6 py-4 border-b border-gray-200">
-              <label htmlFor="name" className="block text-xs text-success mb-2 font-medium">
+            <div className="px-6 py-4 border-b border-gray-200 dark:border-dark-border">
+              <label htmlFor="name" className="block text-xs text-success dark:text-dark-success mb-2 font-medium">
                 {translate('yourName', language)}
               </label>
               {isEditMode ? (
@@ -113,20 +113,20 @@ function ProfilePage({ user, onUpdateUser, language }) {
                   type="text"
                   value={formData.name}
                   onChange={handleInputChange}
-                  className="w-full px-0 py-1 text-text border-b-2 border-success focus:outline-none text-lg"
+                  className="w-full px-0 py-1 text-text dark:text-dark-text bg-transparent border-b-2 border-success dark:border-dark-success focus:outline-none text-lg"
                   aria-label="Edit name"
                   data-testid="name-input"
                 />
               ) : (
-                <p className="text-text text-lg" data-testid="name-display">
+                <p className="text-text dark:text-dark-text text-lg" data-testid="name-display">
                   {user.name}
                 </p>
               )}
             </div>
 
             {/* About Field */}
-            <div className="px-6 py-4 border-b border-gray-200">
-              <label htmlFor="about" className="block text-xs text-secondary mb-2">
+            <div className="px-6 py-4 border-b border-gray-200 dark:border-dark-border">
+              <label htmlFor="about" className="block text-xs text-secondary dark:text-dark-secondary mb-2">
                 {translate('about', language)}
               </label>
               {isEditMode ? (
@@ -136,20 +136,20 @@ function ProfilePage({ user, onUpdateUser, language }) {
                   value={formData.about}
                   onChange={handleInputChange}
                   rows="2"
-                  className="w-full px-0 py-1 text-text border-b-2 border-success focus:outline-none resize-none"
+                  className="w-full px-0 py-1 text-text dark:text-dark-text bg-transparent border-b-2 border-success dark:border-dark-success focus:outline-none resize-none"
                   aria-label="Edit about"
                   data-testid="about-input"
                 />
               ) : (
-                <p className="text-text" data-testid="about-display">
+                <p className="text-text dark:text-dark-text" data-testid="about-display">
                   {user.about}
                 </p>
               )}
             </div>
 
             {/* Phone Field (Read-only) */}
-            <div className="px-6 py-4 border-b border-gray-200">
-              <label htmlFor="phone" className="block text-xs text-secondary mb-2">
+            <div className="px-6 py-4 border-b border-gray-200 dark:border-dark-border">
+              <label htmlFor="phone" className="block text-xs text-secondary dark:text-dark-secondary mb-2">
                 {translate('phone', language)}
               </label>
               {isEditMode ? (
@@ -159,30 +159,30 @@ function ProfilePage({ user, onUpdateUser, language }) {
                   type="tel"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  className="w-full px-0 py-1 text-text border-b-2 border-success focus:outline-none"
+                  className="w-full px-0 py-1 text-text dark:text-dark-text bg-transparent border-b-2 border-success dark:border-dark-success focus:outline-none"
                   aria-label="Edit phone"
                   data-testid="phone-input"
                 />
               ) : (
-                <p className="text-text" data-testid="phone-display">
+                <p className="text-text dark:text-dark-text" data-testid="phone-display">
                   {user.phone}
                 </p>
               )}
             </div>
 
             {/* Status Field (Read-only) */}
-            <div className="px-6 py-4 border-b border-gray-200">
-              <label className="block text-xs text-secondary mb-2">
+            <div className="px-6 py-4 border-b border-gray-200 dark:border-dark-border">
+              <label className="block text-xs text-secondary dark:text-dark-secondary mb-2">
                 {translate('status', language)}
               </label>
               <div className="flex items-center gap-2">
                 <span 
                   className={`w-3 h-3 rounded-full ${
-                    user.status === 'online' ? 'bg-success' : 'bg-gray-400'
+                    user.status === 'online' ? 'bg-success dark:bg-dark-success' : 'bg-gray-400 dark:bg-dark-secondary'
                   }`}
                   aria-label={`Status: ${user.status}`}
                 />
-                <p className="text-text capitalize" data-testid="status-display">
+                <p className="text-text dark:text-dark-text capitalize" data-testid="status-display">
                   {translate(user.status, language)}
                 </p>
               </div>
@@ -190,19 +190,19 @@ function ProfilePage({ user, onUpdateUser, language }) {
           </div>
 
           {/* Edit/Save Buttons */}
-          <div className="px-6 py-6 bg-white mt-4">
+          <div className="px-6 py-6 bg-white dark:bg-dark-surface mt-4">
             {isEditMode ? (
               <div className="flex gap-4">
                 <button
                   onClick={handleSave}
-                  className="flex-1 px-6 py-3 bg-success text-white rounded-lg hover:bg-success/90 font-medium transition-colors shadow-sm"
+                  className="flex-1 px-6 py-3 bg-success dark:bg-dark-success text-white rounded-lg hover:bg-success/90 dark:hover:bg-dark-success/90 font-medium transition-colors shadow-sm"
                   data-testid="save-button"
                 >
                   {translate('saveChanges', language)}
                 </button>
                 <button
                   onClick={handleCancel}
-                  className="flex-1 px-6 py-3 bg-gray-200 text-text rounded-lg hover:bg-gray-300 font-medium transition-colors"
+                  className="flex-1 px-6 py-3 bg-gray-200 dark:bg-dark-border text-text dark:text-dark-text rounded-lg hover:bg-gray-300 dark:hover:bg-dark-primary font-medium transition-colors"
                   data-testid="cancel-button"
                 >
                   {translate('cancel', language)}
@@ -211,7 +211,7 @@ function ProfilePage({ user, onUpdateUser, language }) {
             ) : (
               <button
                 onClick={() => setIsEditMode(true)}
-                className="w-full px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 font-medium transition-colors shadow-sm"
+                className="w-full px-6 py-3 bg-primary dark:bg-dark-primary text-white rounded-lg hover:bg-primary/90 dark:hover:bg-dark-primary/90 font-medium transition-colors shadow-sm"
                 data-testid="edit-button"
               >
                 {translate('editProfile', language)}

@@ -18,7 +18,7 @@ function MessageList({ messages, language }) {
   }, [messages]);
 
   return (
-    <div className="flex-1 overflow-y-auto px-4 py-4 bg-background">
+    <div className="flex-1 overflow-y-auto px-4 py-4 bg-background dark:bg-dark-background">
       {messages.length > 0 ? (
         <>
           {messages.map((message) => (
@@ -27,7 +27,7 @@ function MessageList({ messages, language }) {
           <div ref={messagesEndRef} />
         </>
       ) : (
-        <div className="flex items-center justify-center h-full text-secondary">
+        <div className="flex items-center justify-center h-full text-secondary dark:text-dark-secondary">
           <p>{translate('noMessages', language)}</p>
         </div>
       )}

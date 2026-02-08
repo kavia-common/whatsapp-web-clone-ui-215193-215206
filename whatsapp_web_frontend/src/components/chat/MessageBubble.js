@@ -14,13 +14,13 @@ function MessageBubble({ message }) {
       <div
         className={`max-w-xs lg:max-w-md xl:max-w-lg px-4 py-2 rounded-lg shadow-sm ${
           sent
-            ? 'bg-success text-white rounded-br-none'
-            : 'bg-white text-text rounded-bl-none border border-gray-200'
+            ? 'bg-success dark:bg-dark-success text-white rounded-br-none'
+            : 'bg-white dark:bg-dark-surface text-text dark:text-dark-text rounded-bl-none border border-gray-200 dark:border-dark-border'
         }`}
       >
         <p className="text-sm break-words">{text}</p>
         <div className={`flex items-center justify-end gap-1 mt-1 text-xs ${
-          sent ? 'text-white/80' : 'text-secondary'
+          sent ? 'text-white/80' : 'text-secondary dark:text-dark-secondary'
         }`}>
           <span>{timestamp}</span>
           {sent && (

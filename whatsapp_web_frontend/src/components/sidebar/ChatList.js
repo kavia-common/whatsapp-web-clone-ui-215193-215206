@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import ChatListItem from './ChatListItem';
 import SearchBar from '../common/SearchBar';
 import LanguageSelector from '../common/LanguageSelector';
+import ThemeToggle from '../common/ThemeToggle';
 import { translate } from '../../utils/i18n';
 
 /**
@@ -14,9 +15,10 @@ import { translate } from '../../utils/i18n';
  * @param {Object} props.currentUser - Current user object for profile navigation
  * @param {string} props.language - Current language code
  * @param {Function} props.onLanguageChange - Callback when language changes
+ * @param {Function} props.onThemeChange - Callback when theme changes
  */
 // PUBLIC_INTERFACE
-function ChatList({ chats, activeChat, onChatSelect, currentUser, language, onLanguageChange }) {
+function ChatList({ chats, activeChat, onChatSelect, currentUser, language, onLanguageChange, onThemeChange }) {
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
@@ -37,35 +39,36 @@ function ChatList({ chats, activeChat, onChatSelect, currentUser, language, onLa
   };
 
   return (
-    <div className="flex flex-col h-full bg-white">
+    <div className="flex flex-col h-full bg-white dark:bg-dark-surface">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 bg-background border-b border-gray-200">
+      <div className="flex items-center justify-between px-4 py-3 bg-background dark:bg-dark-background border-b border-gray-200 dark:border-dark-border">
         <div className="flex items-center gap-3">
           <button
             onClick={handleProfileClick}
-            className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/10 to-gray-100 flex items-center justify-center text-xl shadow-sm hover:shadow-md transition-shadow"
+            className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/10 to-gray-100 dark:from-dark-primary/20 dark:to-dark-border flex items-center justify-center text-xl shadow-sm hover:shadow-md transition-shadow"
             aria-label="Open profile"
             title="Profile"
           >
             {currentUser?.avatar || '😊'}
           </button>
-          <h2 className="text-lg font-semibold text-text">{translate('chats', language)}</h2>
+          <h2 className="text-lg font-semibold text-text dark:text-dark-text">{translate('chats', language)}</h2>
         </div>
         <div className="flex gap-2">
+          <ThemeToggle onThemeChange={onThemeChange} />
           <LanguageSelector onLanguageChange={onLanguageChange} />
           <button
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            className="p-2 hover:bg-gray-100 dark:hover:bg-dark-border rounded-full transition-colors text-primary dark:text-dark-text"
             aria-label={translate('newChat', language)}
           >
-            <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
             </svg>
           </button>
           <button
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            className="p-2 hover:bg-gray-100 dark:hover:bg-dark-border rounded-full transition-colors text-primary dark:text-dark-text"
             aria-label={translate('menu', language)}
           >
-            <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
             </svg>
           </button>
@@ -87,7 +90,7 @@ function ChatList({ chats, activeChat, onChatSelect, currentUser, language, onLa
             />
           ))
         ) : (
-          <div className="flex items-center justify-center h-full text-secondary">
+          <div className="flex items-center justify-center h-full text-secondary dark:text-dark-secondary">
             <p>{translate('noChatsFound', language)}</p>
           </div>
         )}

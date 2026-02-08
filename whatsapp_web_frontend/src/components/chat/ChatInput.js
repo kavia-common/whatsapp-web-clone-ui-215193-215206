@@ -27,12 +27,12 @@ function ChatInput({ onSendMessage, language }) {
   };
 
   return (
-    <div className="px-4 py-3 bg-white border-t border-gray-200">
+    <div className="px-4 py-3 bg-white dark:bg-dark-surface border-t border-gray-200 dark:border-dark-border">
       <form onSubmit={handleSubmit} className="flex items-end gap-2">
         {/* Emoji button placeholder */}
         <button
           type="button"
-          className="p-2 text-secondary hover:text-primary transition-colors flex-shrink-0"
+          className="p-2 text-secondary dark:text-dark-secondary hover:text-primary dark:hover:text-dark-primary transition-colors flex-shrink-0"
           aria-label={translate('addEmoji', language)}
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -43,7 +43,7 @@ function ChatInput({ onSendMessage, language }) {
         {/* Attachment button placeholder */}
         <button
           type="button"
-          className="p-2 text-secondary hover:text-primary transition-colors flex-shrink-0"
+          className="p-2 text-secondary dark:text-dark-secondary hover:text-primary dark:hover:text-dark-primary transition-colors flex-shrink-0"
           aria-label={translate('attachFile', language)}
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -58,7 +58,7 @@ function ChatInput({ onSendMessage, language }) {
           onKeyPress={handleKeyPress}
           placeholder={translate('typeMessage', language)}
           rows="1"
-          className="flex-1 px-4 py-2 bg-background border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none text-sm"
+          className="flex-1 px-4 py-2 bg-background dark:bg-dark-background border border-gray-300 dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-dark-primary focus:border-transparent resize-none text-sm text-text dark:text-dark-text placeholder-secondary dark:placeholder-dark-secondary"
           aria-label={translate('typeMessage', language)}
         />
 
@@ -68,8 +68,8 @@ function ChatInput({ onSendMessage, language }) {
           disabled={!message.trim()}
           className={`p-2 rounded-full transition-all flex-shrink-0 ${
             message.trim()
-              ? 'bg-success text-white hover:bg-success/90'
-              : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+              ? 'bg-success dark:bg-dark-success text-white hover:bg-success/90 dark:hover:bg-dark-success/90'
+              : 'bg-gray-200 dark:bg-dark-border text-gray-400 dark:text-dark-secondary cursor-not-allowed'
           }`}
           aria-label={translate('sendMessage', language)}
         >
